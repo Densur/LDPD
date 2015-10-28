@@ -22,6 +22,9 @@ class LDPortfolio:
         self._pd_cond_old = pd_cond_old
         if pd_cond_old:
             self._ar_estimate()
+        else:
+            self._implied_ar = None
+            self._current_ct = None
         if rating_type == "RATING":
             portf_total = sum(portf_uncond)
             portf_cum = tuple(self._cumulative_sum(portf_uncond))
@@ -180,13 +183,16 @@ class VDBCalibration(LDPortfolio):
         """
         return self._pd_uncond_target_ar
 
-# Examples
+# ## Examples
 # portf_scores = tuple(range(100))
 # pd = [x / 1000 for x in range(100)]
 # pd = pd[::-1]
 # p = LDPortfolio(portf_scores, rating_type='SCORE', pd_cond_old=pd)
 # vdb = VDBCalibration(portf_scores, rating_type='SCORE', target_ar=0.5,
 #                      target_ct=0.15, pd_cond_old=pd, pd_uncond_target_ar=0.1)
+# vdb = VDBCalibration([10, 20, 20, 30, 10], rating_type='RATING', target_ar=0.5,
+#                      target_ct=0.15, pd_uncond_target_ar=0.1)
+#
 # print(vdb.k)
 # print(vdb.implied_ar)
 # print(vdb.current_ct)
